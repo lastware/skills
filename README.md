@@ -5,7 +5,7 @@ open-source packages and checked for real before we call them done.
 
 | Skill | Package | What it does | Status |
 |---|---|---|---|
-| [build-bref-interface](skills/bref-ui/build-bref-interface/SKILL.md) | [bref-ui](https://github.com/feuersteiner/bref-ui) `3.1.1` | Build a Svelte 5 dashboard, admin panel or internal tool from real Bref UI components, then verify it with `svelte-check` and a production build | Preview |
+| [build-bref-interface](skills/build-bref-interface/SKILL.md) | [bref-ui](https://github.com/feuersteiner/bref-ui) `3.1.1` | Build a Svelte 5 dashboard, admin panel or internal tool from real Bref UI components, then verify it with `svelte-check` and a production build | Preview |
 
 ### Built with it
 
@@ -14,7 +14,7 @@ by the skill's verifier and reviewed from a screenshot. Source in [`demos/bref-u
 
 | | |
 |---|---|
-| ![Support dashboard](skills/bref-ui/build-bref-interface/assets/support-dashboard.png) **Support dashboard:** *"Build a customer support dashboard with ticket management, filters, a sidebar and KPI cards."* | ![Agent monitor](demos/bref-ui/agent-monitor/screenshot.png) **AI agent monitor:** *"Build a monitoring page for my AI agents: running jobs, progress bars, logs, stop button."* |
+| ![Support dashboard](skills/build-bref-interface/assets/support-dashboard.png) **Support dashboard:** *"Build a customer support dashboard with ticket management, filters, a sidebar and KPI cards."* | ![Agent monitor](demos/bref-ui/agent-monitor/screenshot.png) **AI agent monitor:** *"Build a monitoring page for my AI agents: running jobs, progress bars, logs, stop button."* |
 | ![File explorer](demos/bref-ui/file-explorer/screenshot.png) **File explorer:** *"Build a file explorer with a folder tree on the left and a preview on the right."* | ![Prompt library](demos/bref-ui/prompt-library/screenshot.png) **Prompt library:** *"Build a prompt library: browse prompts by tag, search, edit in a dialog."* |
 | ![Feature flags](demos/bref-ui/feature-flags/screenshot.png) **Feature flags:** *"Build a feature flags dashboard with on/off switches per environment."* | |
 
