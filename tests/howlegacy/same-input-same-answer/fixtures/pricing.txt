@@ -1,4 +1,0 @@
-[https://ledgerline.example/pricing]
-Pricing
-Ledgerline is licensed per named user, with modules for payroll, inventory and fixed assets.
-Contact us for a custom quote. Minimum term: three years.

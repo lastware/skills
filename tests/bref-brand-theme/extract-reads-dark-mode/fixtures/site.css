@@ -1,0 +1,4 @@
+:root { --hue: 220; --brand: #ff3e00; --bg: hsl(var(--hue), 10%, 98%); --font-heading: 'DM Serif Display', serif; }
+.dark { --brand: #f96743; --bg: hsl(var(--hue), 10%, 12%); }
+body { font-family: 'Fira Sans', sans-serif; }
+h1 { font: 500 3rem / 1.2 var(--font-heading); }
