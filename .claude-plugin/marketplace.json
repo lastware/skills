@@ -7,10 +7,10 @@
   "plugins": [
     {
       "name": "bref-ui",
-      "source": "./",
+      "source": "./skills/bref-ui",
       "strict": false,
       "description": "Build Svelte 5 interfaces with Bref UI components, verified with svelte-check and a production build.",
-      "skills": ["./skills/bref-ui/build-bref-interface"]
+      "skills": ["./build-bref-interface"]
     }
   ]
 }

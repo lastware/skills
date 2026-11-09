@@ -1,5 +1,5 @@
 {
-	"name": "file-explorer",
+	"name": "agent-monitor",
 	"version": "0.0.1",
 	"private": true,
 	"type": "module",
@@ -13,7 +13,8 @@
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"verify": "node ../../../skills/bref-ui/build-bref-interface/scripts/verify.mjs"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^8.0.0",

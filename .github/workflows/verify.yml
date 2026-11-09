@@ -6,17 +6,32 @@ on:
   pull_request:
 
 jobs:
-  build-bref-interface:
+  repo:
+    name: Repo check
+    runs-on: ubuntu-latest
+    outputs:
+      projects: ${{ steps.projects.outputs.projects }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Every skill is registered, named and documented
+        run: node scripts/repo.mjs check
+      - name: Plugin marketplace manifest is valid
+        run: npx --yes @anthropic-ai/claude-code plugin validate . --strict
+      - id: projects
+        name: Find example and demo projects
+        run: echo "projects=$(node scripts/repo.mjs projects)" >> "$GITHUB_OUTPUT"
+
+  verify:
+    name: Verify ${{ matrix.project }}
+    needs: repo
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        project:
-          - skills/bref-ui/build-bref-interface/example
-          - demos/agent-monitor
-          - demos/file-explorer
-          - demos/prompt-library
-          - demos/feature-flags
+        project: ${{ fromJSON(needs.repo.outputs.projects) }}
     defaults:
       run:
         working-directory: ${{ matrix.project }}
@@ -26,4 +41,4 @@ jobs:
         with:
           node-version: 22
       - run: npm ci
-      - run: node $GITHUB_WORKSPACE/skills/bref-ui/build-bref-interface/scripts/verify.mjs
+      - run: npm run verify
