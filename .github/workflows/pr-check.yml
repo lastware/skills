@@ -1,0 +1,25 @@
+# Runs on every pull request, without any secret. The weekly WhatChanged workflow runs this repository's code with
+# the OpenAI key, so a pull request from a fork that changes anything outside watch/ fails on purpose: review every
+# line before merging it.
+name: PR check
+on: pull_request
+permissions:
+  contents: read
+jobs:
+  fork-changes:
+    if: github.event.pull_request.head.repo.full_name != github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Changes outside watch/
+        run: |
+          outside=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep -v '^watch/' || true)
+          if [ -n "$outside" ]; then
+            echo "::error::This pull request changes more than the watchlist:"
+            echo "$outside"
+            echo "::error::The weekly workflow runs this code with the repository's OpenAI key. Review every line before merging."
+            exit 1
+          fi
+          echo "Only watch/ changed: safe to merge once the checks pass."
