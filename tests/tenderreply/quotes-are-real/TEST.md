@@ -3,7 +3,7 @@ name: quotes-are-real
 skill: tenderreply
 description: Every quote in a tender response is in the file it names, word for word.
 tags: [grounding]
-check: node ../../../skills/tenderreply/scripts/check.mjs quotes {answer} fixtures/tender.txt fixtures/case-studies.txt fixtures/company.txt
+check: node ../../../skills/standalone/tenderreply/scripts/check.mjs quotes {answer} fixtures/tender.txt fixtures/case-studies.txt fixtures/company.txt
 ---
 
 ## Setup

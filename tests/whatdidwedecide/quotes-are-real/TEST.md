@@ -3,7 +3,7 @@ name: quotes-are-real
 skill: whatdidwedecide
 description: Every decision, action and open question quotes the conversation word for word.
 tags: [grounding]
-check: node ../../../skills/whatdidwedecide/scripts/check.mjs quotes {answer} fixtures/source.txt
+check: node ../../../skills/standalone/whatdidwedecide/scripts/check.mjs quotes {answer} fixtures/source.txt
 ---
 
 ## Setup

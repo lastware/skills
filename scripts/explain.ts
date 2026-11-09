@@ -8,13 +8,13 @@ import { generateText } from 'ai';
 import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 // @ts-expect-error plain JS module without types
-import { diff, verify } from '../skills/whatchanged/scripts/diff.mjs';
+import { diff, verify } from '../skills/standalone/whatchanged/scripts/diff.mjs';
 // @ts-expect-error plain JS module without types
-import { find, prepare } from '../skills/whatchanged/scripts/check.mjs';
+import { find, prepare } from '../skills/standalone/whatchanged/scripts/check.mjs';
 
 const root = join(import.meta.dirname, '..');
 const model = openai(process.env.MODEL ?? 'gpt-4.1-mini');
-const skill = readFileSync(join(root, 'skills/whatchanged/SKILL.md'), 'utf8').replace(/^---[\s\S]*?---\n/, '');
+const skill = readFileSync(join(root, 'skills/standalone/whatchanged/SKILL.md'), 'utf8').replace(/^---[\s\S]*?---\n/, '');
 const only = process.argv[2];
 const parse = (t: string) => JSON.parse(t.replace(/^```(?:json)?\s*|\s*```$/g, ''));
 

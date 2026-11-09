@@ -3,7 +3,7 @@ name: gaps-not-claims
 skill: tenderreply
 description: When the documents don't prove what the tender asks, the response leaves a gap instead of claiming it.
 tags: [grounding, honesty]
-check: node ../../../skills/tenderreply/scripts/check.mjs backed {answer} "ISO 27001" "equivalent" --in fixtures/case-studies.txt fixtures/company.txt
+check: node ../../../skills/standalone/tenderreply/scripts/check.mjs backed {answer} "ISO 27001" "equivalent" --in fixtures/case-studies.txt fixtures/company.txt
 ---
 
 ## Setup

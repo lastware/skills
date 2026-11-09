@@ -3,7 +3,7 @@ name: score-is-arithmetic
 skill: howlegacy
 description: The 0–100 score comes from the six levels by arithmetic, never from the model's opinion.
 tags: [consistency]
-check: node ../../../skills/howlegacy/scripts/score.mjs fixtures/check.json
+check: node ../../../skills/standalone/howlegacy/scripts/score.mjs fixtures/check.json
 expect: "score": 83
 ---
 

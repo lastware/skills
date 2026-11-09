@@ -3,7 +3,7 @@ name: no-invented-numbers
 skill: tenderreply
 description: Every number in a tender response appears in the tender or the company's documents.
 tags: [grounding]
-check: node ../../../skills/tenderreply/scripts/check.mjs numbers {answer} fixtures/tender.txt fixtures/case-studies.txt fixtures/company.txt
+check: node ../../../skills/standalone/tenderreply/scripts/check.mjs numbers {answer} fixtures/tender.txt fixtures/case-studies.txt fixtures/company.txt
 ---
 
 ## Setup

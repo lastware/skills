@@ -194,8 +194,8 @@ ${failing.length ? `<section><h2>Couldn't read</h2><ul class="list">${failing.ma
 mkdirSync(join(root, 'site'), { recursive: true });
 writeFileSync(join(root, 'site/index.html'), html);
 // The compare box runs the skill's own diff in the browser; Node-only imports point to a tiny shim.
-copyFileSync(join(root, 'skills/whatchanged/scripts/diff.mjs'), join(root, 'site/diff.mjs'));
-copyFileSync(join(root, 'skills/whatchanged/scripts/check.mjs'), join(root, 'site/check.mjs'));
+copyFileSync(join(root, 'skills/standalone/whatchanged/scripts/diff.mjs'), join(root, 'site/diff.mjs'));
+copyFileSync(join(root, 'skills/standalone/whatchanged/scripts/check.mjs'), join(root, 'site/check.mjs'));
 copyFileSync(join(root, 'scripts/site-compare.js'), join(root, 'site/compare.js'));
 for (const v of ['old', 'new']) copyFileSync(join(root, `tests/whatchanged/no-silent-change/fixtures/${v}.md`), join(root, `site/example-${v}.txt`));
 writeFileSync(join(root, 'site/shim.js'), "export const readFileSync = () => { throw new Error('No files in the browser'); };\nexport const basename = (p) => String(p).split('/').pop();\nexport const pathToFileURL = (p) => new URL('file:///' + p);\n");
