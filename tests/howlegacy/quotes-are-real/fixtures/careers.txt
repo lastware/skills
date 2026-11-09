@@ -1,3 +1,0 @@
-[https://ledgerline.example/careers]
-Senior Developer, Delphi and COBOL
-You will maintain the desktop client and our on-premise batch jobs.
