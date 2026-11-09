@@ -1,0 +1,20 @@
+name: Verify skills
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  bref-ui-build-bref-interface:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: skills/bref-ui/build-bref-interface/example
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: node ../scripts/verify.mjs
