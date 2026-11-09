@@ -7,7 +7,7 @@ on:
 
 jobs:
   repo:
-    name: Repo check
+    name: Repo check and tests
     runs-on: ubuntu-latest
     outputs:
       projects: ${{ steps.projects.outputs.projects }}
@@ -16,8 +16,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Every skill is named, documented and has an example
+      - name: Every skill is named and documented
         run: node scripts/repo.mjs check
+      - name: Skill tests (good answers pass, bad ones fail)
+        run: node scripts/test.mjs
+      - name: WhatChanged watchlist is valid
+        run: node scripts/validate-watch.mjs
       - id: projects
         name: Find example and demo projects
         run: echo "projects=$(node scripts/repo.mjs projects)" >> "$GITHUB_OUTPUT"
