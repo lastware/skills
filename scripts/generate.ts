@@ -79,7 +79,7 @@ Lead with what the reader most needs. Show each item with its quote.
 
 let written = 0;
 for (const p of products.filter((p) => configDriven(p) && (all || p.status === 'live'))) {
-	const dir = join(root, 'skills', p.slug);
+	const dir = join(root, 'skills/standalone', p.slug);
 	mkdirSync(join(dir, 'scripts'), { recursive: true });
 	writeFileSync(join(dir, 'SKILL.md'), skill(p));
 	if (p.example && Object.keys(p.example).length && !existsSync(join(dir, 'example'))) {
@@ -87,12 +87,12 @@ for (const p of products.filter((p) => configDriven(p) && (all || p.status === '
 		for (const [id, text] of Object.entries(p.example)) writeFileSync(join(dir, 'example', p.inputs.length > 1 ? `${id}.txt` : 'source.txt'), text + '\n');
 	}
 	written++;
-	console.log(`wrote skills/${p.slug}/SKILL.md${p.status === 'soon' ? ' (soon)' : ''}`);
+	console.log(`wrote skills/standalone/${p.slug}/SKILL.md${p.status === 'soon' ? ' (soon)' : ''}`);
 }
 
 // Every skill gets its own copy of the shared check, so each folder installs on its own.
-for (const slug of readdirSync(join(root, 'skills'))) {
-	mkdirSync(join(root, 'skills', slug, 'scripts'), { recursive: true });
-	copyFileSync(join(root, 'shared/check.mjs'), join(root, 'skills', slug, 'scripts/check.mjs'));
+for (const slug of readdirSync(join(root, 'skills/standalone'))) {
+	mkdirSync(join(root, 'skills/standalone', slug, 'scripts'), { recursive: true });
+	copyFileSync(join(root, 'shared/check.mjs'), join(root, 'skills/standalone', slug, 'scripts/check.mjs'));
 }
 console.log(`${written} generated, check.mjs copied into every skill.`);

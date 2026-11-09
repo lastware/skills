@@ -5,7 +5,7 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { diff } from '../skills/whatchanged/scripts/diff.mjs';
+import { diff } from '../skills/standalone/whatchanged/scripts/diff.mjs';
 import { load } from './validate-watch.mjs';
 import { extract } from './watch.mjs';
 

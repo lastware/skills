@@ -9,14 +9,14 @@ import { join } from 'node:path';
 // @ts-expect-error plain JS module without types
 import { checkQuotes, textsIn, unbacked, unsupportedNumbers } from '../shared/check.mjs';
 // @ts-expect-error plain JS module without types
-import { diff, verify } from '../skills/whatchanged/scripts/diff.mjs';
+import { diff, verify } from '../skills/standalone/whatchanged/scripts/diff.mjs';
 
 const root = join(import.meta.dirname, '..');
 const model = openai(process.env.MODEL ?? 'gpt-4.1-mini');
 const only = process.argv[2];
 
 const files = (dir: string) => readdirSync(dir).filter((f) => f.endsWith('.txt')).map((f) => ({ name: f, text: readFileSync(join(dir, f), 'utf8') }));
-const skillOf = (slug: string) => readFileSync(join(root, 'skills', slug, 'SKILL.md'), 'utf8').replace(/^---[\s\S]*?---\n/, '');
+const skillOf = (slug: string) => readFileSync(join(root, 'skills/standalone', slug, 'SKILL.md'), 'utf8').replace(/^---[\s\S]*?---\n/, '');
 
 type Source = { name: string; text: string };
 type Msg = { role: 'user' | 'assistant'; content: string };

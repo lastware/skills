@@ -10,8 +10,9 @@ const read = (p) => readFileSync(join(root, p), 'utf8');
 const isDir = (p) => existsSync(join(root, p)) && statSync(join(root, p)).isDirectory();
 const dirs = (p) => (isDir(p) ? readdirSync(join(root, p)).filter((d) => !d.startsWith('.') && isDir(`${p}/${d}`)) : []);
 
-// skills/<skill>/SKILL.md, checked by an example/ project (CI builds it) and/or tests/<skill>/ (npm test).
-const skills = dirs('skills').map((name) => ({ name, dir: `skills/${name}` }));
+// skills/<package>/<skill>/SKILL.md, grouped by the package the skill is built on ("standalone" when none),
+// checked by an example/ project (CI builds it) and/or tests/<skill>/ (npm test).
+const skills = dirs('skills').flatMap((pkg) => dirs(`skills/${pkg}`).map((name) => ({ pkg, name, dir: `skills/${pkg}/${name}` })));
 // demos/<package>/<demo>/
 const demos = dirs('demos').flatMap((pkg) => dirs(`demos/${pkg}`).map((name) => `demos/${pkg}/${name}`));
 const projects = [...skills.map((s) => `${s.dir}/example`).filter((p) => existsSync(join(root, p, 'package.json'))), ...demos];
@@ -29,7 +30,10 @@ const errors = [];
 const warnings = [];
 const readme = read('README.md');
 
+const seen = new Map();
 for (const s of skills) {
+	if (seen.has(s.name)) errors.push(`${s.dir}: skill name "${s.name}" is also used by ${seen.get(s.name)}`);
+	seen.set(s.name, s.dir);
 	const where = `${s.dir}/SKILL.md`;
 	if (!existsSync(join(root, where))) {
 		errors.push(`${s.dir}: missing SKILL.md`);
@@ -49,7 +53,7 @@ for (const p of projects) {
 	if (!JSON.parse(read(`${p}/package.json`)).scripts?.verify) errors.push(`${p}: package.json needs a "verify" script that runs the skill's verifier`);
 }
 for (const t of dirs('tests')) {
-	if (!isDir(`skills/${t}`)) errors.push(`tests/${t}: no skills/${t}/ for these tests`);
+	if (!seen.has(t)) errors.push(`tests/${t}: no skill named ${t} for these tests`);
 }
 
 for (const w of warnings) console.warn(`warning: ${w}`);

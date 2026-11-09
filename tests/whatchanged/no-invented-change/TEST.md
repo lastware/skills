@@ -3,7 +3,7 @@ name: no-invented-change
 skill: whatchanged
 description: The explanation cites only changes that exist.
 tags: [grounding]
-check: node ../../../skills/whatchanged/scripts/diff.mjs verify {answer} fixtures/old.md fixtures/new.md --only no-invented-change
+check: node ../../../skills/standalone/whatchanged/scripts/diff.mjs verify {answer} fixtures/old.md fixtures/new.md --only no-invented-change
 ---
 
 ## Setup

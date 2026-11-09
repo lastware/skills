@@ -11,7 +11,7 @@ import { createHash } from 'node:crypto';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { diff } from '../skills/whatchanged/scripts/diff.mjs';
+import { diff } from '../skills/standalone/whatchanged/scripts/diff.mjs';
 import { load } from './validate-watch.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');

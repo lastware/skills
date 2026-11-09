@@ -3,7 +3,7 @@ name: no-silent-change
 skill: whatchanged
 description: Every change between two versions is explained, or declared minor with a reason. None is skipped.
 tags: [completeness]
-check: node ../../../skills/whatchanged/scripts/diff.mjs verify {answer} fixtures/old.md fixtures/new.md --only no-silent-change
+check: node ../../../skills/standalone/whatchanged/scripts/diff.mjs verify {answer} fixtures/old.md fixtures/new.md --only no-silent-change
 ---
 
 ## Setup
