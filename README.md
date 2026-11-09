@@ -24,15 +24,17 @@ Planned next: `script-to-cli` ([clinguini](https://github.com/feuersteiner/cling
 
 ## Install
 
-**Claude Code**
+A skill is a folder. Copy it into the folder your agent loads skills from.
+For Claude Code, that's `.claude/skills/` in your project, or `~/.claude/skills/`
+to use it in every project:
 
-```text
-/plugin marketplace add mlgxiii/skills
-/plugin install bref-ui@lastware
+```sh
+git clone --depth 1 https://github.com/mlgxiii/skills.git /tmp/lastware-skills
+cp -R /tmp/lastware-skills/skills/bref-ui/build-bref-interface .claude/skills/
 ```
 
-**Any agent that reads `SKILL.md` folders:** copy the skill folder into your
-agent's skills directory, for example `.claude/skills/build-bref-interface/`.
+Any other agent that reads `SKILL.md` folders works the same way: copy the
+folder into its skills directory, or point it at the `SKILL.md`.
 
 ## What makes a Lastware skill
 
@@ -46,7 +48,7 @@ Every skill:
 ## Layout
 
 ```text
-skills/<package>/             # one Claude Code plugin per package (bref-ui@lastware, …)
+skills/<package>/             # skills built on one package
   <skill>/
     SKILL.md                  # instructions the agent follows
     scripts/                  # verification helpers
@@ -56,8 +58,7 @@ demos/<package>/<demo>/       # more apps built with the package's skills, also 
 scripts/repo.mjs              # repo checks CI runs on every change
 ```
 
-Installing a plugin copies only its `skills/<package>/` folder. Demos are
-never installed.
+Copy only the `<skill>/` folder you need. Demos stay in this repo.
 
 ## Add a skill
 
@@ -65,12 +66,8 @@ never installed.
    equal the folder name, and it needs a `description`.
 2. Add an `example/` project whose `package.json` has a `verify` script that
    runs the skill's verifier, for example `"verify": "node ../scripts/verify.mjs"`.
-3. Register it in `.claude-plugin/marketplace.json`. For a new package, add a
-   plugin with `"source": "./skills/<package>"`, `"strict": false` and
-   `"skills": ["./<skill>"]`. For an existing package, append `"./<skill>"`
-   to that plugin's `skills`.
-4. Add a row to the skills table above that links its `SKILL.md`.
-5. Optional: add demos under `demos/<package>/<demo>/`, each with a `verify` script.
+3. Add a row to the skills table above that links its `SKILL.md`.
+4. Optional: add demos under `demos/<package>/<demo>/`, each with a `verify` script.
 
 Then run `node scripts/repo.mjs check`. It lists every step you missed. CI runs
 the same check and verifies every example and demo it finds, with no workflow

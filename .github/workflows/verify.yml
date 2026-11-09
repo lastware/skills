@@ -16,10 +16,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Every skill is registered, named and documented
+      - name: Every skill is named, documented and has an example
         run: node scripts/repo.mjs check
-      - name: Plugin marketplace manifest is valid
-        run: npx --yes @anthropic-ai/claude-code plugin validate . --strict
       - id: projects
         name: Find example and demo projects
         run: echo "projects=$(node scripts/repo.mjs projects)" >> "$GITHUB_OUTPUT"

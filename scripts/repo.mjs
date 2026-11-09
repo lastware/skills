@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 // Repo checks for mlgxiii/skills.
-//   node scripts/repo.mjs check      fail if a skill, demo or plugin entry is missing a piece
+//   node scripts/repo.mjs check      fail if a skill or demo is missing a piece
 //   node scripts/repo.mjs projects   print the JSON list of projects CI must verify
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
-import { join, posix } from 'node:path';
+import { join } from 'node:path';
 
 const root = new URL('..', import.meta.url).pathname;
 const read = (p) => readFileSync(join(root, p), 'utf8');
@@ -33,23 +33,7 @@ if (process.argv[2] !== 'check') {
 const errors = [];
 const fail = (msg) => errors.push(msg);
 
-const marketplace = JSON.parse(read('.claude-plugin/marketplace.json'));
 const readme = read('README.md');
-const listed = new Map(); // skill dir -> plugin name
-
-const pluginNames = new Set();
-for (const plugin of marketplace.plugins) {
-	if (pluginNames.has(plugin.name)) fail(`marketplace.json: plugin "${plugin.name}" is listed twice`);
-	pluginNames.add(plugin.name);
-	const source = posix.normalize(plugin.source);
-	if (!/^skills\/[^/]+$/.test(source)) fail(`marketplace.json: plugin "${plugin.name}" source must be "./skills/<package>", got "${plugin.source}"`);
-	if (!isDir(source)) fail(`marketplace.json: plugin "${plugin.name}" source ${plugin.source} does not exist`);
-	for (const s of plugin.skills ?? []) {
-		const dir = posix.join(source, s);
-		if (!existsSync(join(root, dir, 'SKILL.md'))) fail(`marketplace.json: plugin "${plugin.name}" lists ${s}, but ${dir}/SKILL.md does not exist`);
-		listed.set(dir, plugin.name);
-	}
-}
 
 const skillNames = new Map();
 for (const s of skills) {
@@ -66,7 +50,6 @@ for (const s of skills) {
 	if (skillNames.has(s.name)) fail(`${where}: skill name "${s.name}" is also used by ${skillNames.get(s.name)}`);
 	skillNames.set(s.name, s.dir);
 
-	if (!listed.has(s.dir)) fail(`${s.dir}: not listed under any plugin in .claude-plugin/marketplace.json`);
 	if (!isDir(`${s.dir}/example`)) fail(`${s.dir}: needs an example/ project that CI verifies`);
 	if (!readme.includes(`(${where})`)) fail(`README.md: add ${s.name} to the skills table, linking (${where})`);
 }
@@ -82,4 +65,4 @@ if (errors.length) {
 	console.error(`Repo check failed:\n${errors.map((e) => `  - ${e}`).join('\n')}`);
 	process.exit(1);
 }
-console.log(`Repo check passed: ${skills.length} skill(s), ${marketplace.plugins.length} plugin(s), ${projects.length} project(s) to verify.`);
+console.log(`Repo check passed: ${skills.length} skill(s), ${projects.length} project(s) to verify.`);
