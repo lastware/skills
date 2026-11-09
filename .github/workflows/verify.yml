@@ -6,15 +6,24 @@ on:
   pull_request:
 
 jobs:
-  bref-ui-build-bref-interface:
+  build-bref-interface:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        project:
+          - skills/bref-ui/build-bref-interface/example
+          - demos/agent-monitor
+          - demos/file-explorer
+          - demos/prompt-library
+          - demos/feature-flags
     defaults:
       run:
-        working-directory: skills/bref-ui/build-bref-interface/example
+        working-directory: ${{ matrix.project }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
       - run: npm ci
-      - run: node ../scripts/verify.mjs
+      - run: node $GITHUB_WORKSPACE/skills/bref-ui/build-bref-interface/scripts/verify.mjs

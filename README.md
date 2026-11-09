@@ -7,12 +7,16 @@ open-source packages and checked for real before we call them done.
 |---|---|---|---|
 | [build-bref-interface](skills/bref-ui/build-bref-interface/SKILL.md) | [bref-ui](https://github.com/feuersteiner/bref-ui) `3.1.1` | Build a Svelte 5 dashboard, admin panel or internal tool from real Bref UI components, then verify it with `svelte-check` and a production build | Preview |
 
-![Support dashboard built by an agent with build-bref-interface](skills/bref-ui/build-bref-interface/assets/support-dashboard.png)
+### Built with it
 
-*Built by a fresh agent from one prompt: "Build a customer support dashboard with
-ticket management, filters, a sidebar and KPI cards." One layout fix (pill
-wrapping in table cells) was added after a screenshot review. Source in
-[`example/`](skills/bref-ui/build-bref-interface/example).*
+Each app below was built by a fresh agent from a single sentence, then checked
+by the skill's verifier and reviewed from a screenshot. Source in [`demos/`](demos).
+
+| | |
+|---|---|
+| ![Support dashboard](skills/bref-ui/build-bref-interface/assets/support-dashboard.png) **Support dashboard:** *"Build a customer support dashboard with ticket management, filters, a sidebar and KPI cards."* | ![Agent monitor](demos/agent-monitor/screenshot.png) **AI agent monitor:** *"Build a monitoring page for my AI agents: running jobs, progress bars, logs, stop button."* |
+| ![File explorer](demos/file-explorer/screenshot.png) **File explorer:** *"Build a file explorer with a folder tree on the left and a preview on the right."* | ![Prompt library](demos/prompt-library/screenshot.png) **Prompt library:** *"Build a prompt library: browse prompts by tag, search, edit in a dialog."* |
+| ![Feature flags](demos/feature-flags/screenshot.png) **Feature flags:** *"Build a feature flags dashboard with on/off switches per environment."* | |
 
 Planned next: `script-to-cli` ([clinguini](https://github.com/feuersteiner/clinguini)),
 `docs-to-task-context` ([contextrie](https://github.com/feuersteiner/contextrie)),
@@ -45,7 +49,9 @@ Every skill:
 skills/<package>/<skill>/
   SKILL.md      # instructions the agent follows
   scripts/      # verification helpers
+  reference/    # extra detail the agent reads on demand
   example/      # project CI verifies the skill against
+demos/          # more apps built with the skills, also verified in CI
 ```
 
 The underlying packages live in their own repositories. This repo depends on
