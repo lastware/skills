@@ -1,6 +1,6 @@
 {
   "name": "lastware",
-  "owner": { "name": "Lastware", "url": "https://github.com/lastware" },
+  "owner": { "name": "mlgxiii", "url": "https://github.com/mlgxiii" },
   "metadata": {
     "description": "Agent skills built on the Lastware open-source packages: Bref UI, Clinguini, Contextrie, Agent Tests."
   },

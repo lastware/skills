@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Repo checks for lastware/skills.
+// Repo checks for mlgxiii/skills.
 //   node scripts/repo.mjs check      fail if a skill, demo or plugin entry is missing a piece
 //   node scripts/repo.mjs projects   print the JSON list of projects CI must verify
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';

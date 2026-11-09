@@ -27,7 +27,7 @@ Planned next: `script-to-cli` ([clinguini](https://github.com/feuersteiner/cling
 **Claude Code**
 
 ```text
-/plugin marketplace add lastware/skills
+/plugin marketplace add mlgxiii/skills
 /plugin install bref-ui@lastware
 ```
 
