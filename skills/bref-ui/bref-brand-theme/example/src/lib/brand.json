@@ -7,22 +7,14 @@
 			"secondary": "#1f5f4a",
 			"background": "#fbf7f0",
 			"foreground": "#1e1a16",
-			"muted": "#746d66",
-			"info": "#2563b8",
-			"success": "#34745a",
-			"warning": "#945c08",
-			"error": "#bc2436"
+			"muted": "#746d66"
 		},
 		"dark": {
 			"primary": "#ff6b2c",
 			"secondary": "#6fbf9f",
 			"background": "#17130f",
 			"foreground": "#f3ece2",
-			"muted": "#a39a90",
-			"info": "#a3c1d1",
-			"success": "#abc3a3",
-			"warning": "#d9bc82",
-			"error": "#dfa4a7"
+			"muted": "#a39a90"
 		}
 	},
 	"fonts": {

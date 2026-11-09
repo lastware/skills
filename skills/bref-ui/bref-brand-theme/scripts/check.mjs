@@ -10,7 +10,7 @@
 //
 // The pairs come from Bref 3.1.1's surface recipes (core/src/lib/theme/surfaces.svelte):
 //   text     body text:  foreground on background
-//   plain    a neutral Pill, Button or Icon in color C: mix(C 80%, foreground) on mix(C 2%, background)
+//   neutral  a neutral Pill, Button or Icon in color C: mix(C 80%, foreground) on mix(C 2%, background)
 //   soft     a soft Pill or Button:                     mix(C 80%, foreground) on mix(C 24%, background)
 //   filled   a filled Pill or Button:                   background on C
 // Every pair must reach WCAG AA for normal text, 4.5:1. Bref's labels are normal-size text.
@@ -71,7 +71,7 @@ function pairs(p, role) {
 	const c = rgb(p[role]);
 	const ink = mix(c, 0.8, fg);
 	return [
-		{ kind: 'plain', role, ink, paper: mix(c, 0.02, bg) },
+		{ kind: 'neutral', role, ink, paper: mix(c, 0.02, bg) },
 		{ kind: 'soft', role, ink, paper: mix(c, 0.24, bg) },
 		{ kind: 'filled', role, ink: bg, paper: c }
 	];
@@ -121,8 +121,24 @@ function fixRole(p, role) {
 	return { role: target, from: p[target], to: null };
 }
 
+/** The roles brand.json sets itself, per mode. */
+function given(brand) {
+	const palette = brand.palette ?? brand;
+	const modes = 'light' in palette || 'dark' in palette ? palette : { light: palette, dark: palette };
+	return { light: Object.keys(modes.light ?? {}), dark: Object.keys(modes.dark ?? {}) };
+}
+
+/** Bref's default secondary is crimson; next to a custom primary it often clashes or reads as an error. */
+export function notes(brand) {
+	const set = given(brand);
+	return set.light.includes('primary') && !set.light.includes('secondary') && !set.dark.includes('secondary')
+		? ["secondary isn't set, so Bref keeps its crimson default (#c51630). Next to your primary it can clash or read as an error: set a secondary from the brand, or tell the user."]
+		: [];
+}
+
 export function fix(brand) {
 	const resolved = resolve(brand);
+	const set = given(brand);
 	const changes = [];
 	for (const mode of ['light', 'dark']) {
 		for (const role of ['foreground', ...ACCENTS]) {
@@ -132,7 +148,13 @@ export function fix(brand) {
 			if (change.to) resolved[mode][change.role] = change.to;
 		}
 	}
-	return { brand: { ...brand, palette: resolved }, changes };
+	// Write back only the roles brand.json set, plus the ones --fix changed: the rest stay Bref defaults.
+	const palette = {};
+	for (const mode of ['light', 'dark']) {
+		const keep = new Set([...set[mode], ...changes.filter((c) => c.mode === mode && c.to).map((c) => c.role)]);
+		palette[mode] = Object.fromEntries(ROLES.filter((r) => keep.has(r)).map((r) => [r, resolved[mode][r]]));
+	}
+	return { brand: { ...brand, palette }, changes };
 }
 
 function report(results) {
@@ -172,5 +194,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
 		else process.stdout.write(json);
 		process.exit(changes.some((c) => !c.to) ? 1 : 0);
 	}
-	process.exit(report(evaluate(resolve(brand))) ? 1 : 0);
+	const failed = report(evaluate(resolve(brand)));
+	for (const n of notes(brand)) console.log(`note: ${n}`);
+	process.exit(failed ? 1 : 0);
 }

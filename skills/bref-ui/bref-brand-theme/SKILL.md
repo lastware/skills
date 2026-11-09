@@ -47,11 +47,16 @@ Use whatever the user gives, in this order of trust:
 
 1. **Hex codes or a brand guide**: use them as given.
 2. **A website**: `node <skill-dir>/scripts/extract.mjs https://brand.example`.
-   It prints the `theme-color`, CSS color variables (names like `--brand`,
-   `--primary` or `--accent` are strong hints), colors ranked by use and split
-   into accents and neutrals, and fonts with where they're loaded from. The most
-   used accent and the `theme-color` are usually the primary. Buttons and links
-   on the page show the real call-to-action color.
+   It prints:
+   - the `theme-color`
+   - CSS color variables for **light and dark mode**, with `var()` references
+     resolved. Names like `--brand`, `--primary`, `--accent` or `--fg-accent`
+     are strong hints. Use the dark values for the dark palette when the site has them.
+   - colors ranked by use, split into accents and neutrals
+   - fonts by role (`text`, `headings`, `code`), font variables, and font stylesheets
+   The `theme-color` and the most used accent are usually the primary. Buttons
+   and links on the page show the real call-to-action color. A site often
+   darkens its logo color for text: prefer that darker shade for light mode.
 3. **A logo or screenshot**: look at the image and read the dominant colors.
    Say that they're estimates.
 
@@ -75,7 +80,11 @@ Write `src/lib/brand.json`:
 ```
 
 - **primary**: the brand's main action color (buttons, links, selected tabs, switches, progress).
-- **secondary**: a second brand color, if there is one. Otherwise leave it out.
+- **secondary**: a second brand color, if there is one. If the brand has none,
+  don't leave Bref's default: it's crimson (`#c51630`), which clashes with most
+  brands and reads like an error. Pick the brand's second most used accent, or a
+  deep neutral from the brand (for example its dark text color, tinted), and
+  tell the user it's your choice. `check.mjs` prints a note when secondary is missing.
 - **background / foreground**: the brand's page and text colors. A slightly
   tinted off-white and off-black usually feel more on-brand than pure white and black.
 - **muted**: a neutral grey for secondary text, ideally tinted toward the brand.
@@ -93,7 +102,7 @@ node <skill-dir>/scripts/check.mjs src/lib/brand.json
 ```
 
 It rebuilds the colors Bref really draws, using Bref's own surface formulas:
-body text, plus every color role as plain, soft and filled Buttons and Pills,
+body text, plus every color role as neutral, soft and filled Buttons and Pills,
 in both modes (44 pairs). Each pair must reach **4.5:1** (WCAG AA for normal
 text). It exits 1 if any pair fails. Bref's own default palette passes all 44.
 
@@ -105,7 +114,8 @@ node <skill-dir>/scripts/check.mjs src/lib/brand.json --fix --write
 
 `--fix` keeps each failing color's hue and saturation and changes only its
 lightness: darker in light mode, lighter in dark mode, until all of that role's
-pairs pass. Rerun the check afterwards. If a color can't pass at its hue, the
+pairs pass. It writes back only the roles you set and the ones it changed; the
+rest stay Bref defaults. Rerun the check afterwards. If a color can't pass at its hue, the
 script says so: pick a different shade with the user.
 
 **Tell the user what changed**, for example: "Your orange `#ff6b2c` is too light
@@ -137,9 +147,16 @@ In the root layout:
 ```
 
 **Fonts.** Load them before you use them:
-- Open-licensed fonts (Google Fonts and most fonts on Fontsource): install
-  `@fontsource-variable/<font>` (or `@fontsource/<font>`) and import it in the
-  layout. The family name is in the package's README, for example `'DM Sans Variable'`.
+- Open-licensed fonts (Google Fonts and most fonts on Fontsource): prefer the
+  variable package, `@fontsource-variable/<font>`, imported once in the layout;
+  its family name ends in "Variable", for example `'DM Sans Variable'`. Check it
+  exists with `npm view @fontsource-variable/<font> version`. If it doesn't
+  (Fira Sans, DM Serif Display…), install `@fontsource/<font>` and import each
+  weight you use: `import '@fontsource/fira-sans/400.css'`, plus `500.css` and
+  `600.css`, the weights Bref's components use. The family name is the plain
+  font name, for example `'Fira Sans'`.
+- A display font that ships one weight (often 400): set `font-weight: 400` on
+  the headings that use it. Otherwise the browser draws a fake bold.
 - A commercial font that the brand self-hosts: don't copy its files from their
   site, because the brand's licence doesn't cover this project. Ask whether the user
   has a licence. If not, use the closest open-licensed match and say which one you chose.
@@ -162,7 +179,8 @@ Check that:
 - the fonts loaded (no system font where a brand font should be)
 - the status pills still read as info, success, warning and error
 
-Delete the preview route afterwards unless the user wants to keep it.
+Then delete the preview route and the `screenshots/` folder, unless the user
+wants to keep them. Don't leave files the user didn't ask for.
 
 ## 7. Report
 
