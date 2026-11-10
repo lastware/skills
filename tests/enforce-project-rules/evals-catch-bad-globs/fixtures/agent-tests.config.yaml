@@ -1,0 +1,4 @@
+decision: { api: openai, url: https://api.openai.com/v1, model: gpt-5-mini, apiKeyEnv: OPENAI_API_KEY }
+reasoning: { api: anthropic, url: https://api.anthropic.com/v1, model: claude-sonnet-5-5, apiKeyEnv: ANTHROPIC_API_KEY }
+trigger: { threshold: 0.5 }
+check: { threshold: 0.5 }

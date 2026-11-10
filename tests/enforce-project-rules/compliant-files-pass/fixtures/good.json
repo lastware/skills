@@ -1,0 +1,40 @@
+{
+	"id": "no-db-outside-repositories",
+	"title": "No database access outside repositories",
+	"description": "Database queries live in the repository layer.",
+	"triggers": [
+		{
+			"id": "server-code",
+			"description": "Server TypeScript outside the repository layer.",
+			"glob": "src/**/!(repositories)/*.ts"
+		}
+	],
+	"checks": [
+		{
+			"id": "query-outside-repository",
+			"description": "Flags direct query calls.",
+			"error": "Database query outside src/lib/server/repositories/.",
+			"grep": "\\b(prisma|db)\\.\\w+\\.(find|create|update|delete)\\w*\\("
+		}
+	],
+	"evals": [
+		{
+			"name": "Route queries Prisma directly",
+			"path": "src/routes/api/users/+server.ts",
+			"content": "await prisma.user.findMany()",
+			"expect": "fail"
+		},
+		{
+			"name": "Route calls repository",
+			"path": "src/routes/api/users/+server.ts",
+			"content": "await usersRepo.list()",
+			"expect": "pass"
+		},
+		{
+			"name": "Repository itself",
+			"path": "src/lib/server/repositories/users.ts",
+			"content": "await prisma.user.findMany()",
+			"expect": "skip"
+		}
+	]
+}
