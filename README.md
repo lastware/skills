@@ -16,16 +16,31 @@ Does it work? I gave a fresh agent one sentence: "Make this app match the svelte
 
 [The skill](skills/bref-ui/bref-brand-theme/SKILL.md) · [The example above](skills/bref-ui/bref-brand-theme/example)
 
+## enforce-project-rules
+
+Turns a rule your coding agent keeps breaking into a test, so it stops getting broken.
+
+You write "never call fetch() in components" in CLAUDE.md. The agent reads it, agrees, and a week later calls fetch() in a component. Instructions are suggestions. Tests aren't.
+
+So the skill turns the rule into an [agent test](https://github.com/feuersteiner/agent-tests): a `TEST.md` that says the rule in plain words, and a `test.yaml` that checks it with a regex, or with a model when the rule needs judgment. Before it trusts the test, it proves it: labeled examples that must fail, pass and be skipped, and one deliberate break to show the test can catch anything at all. Then it checks your code and reports each violation by file and line.
+
+Does it work? I gave a fresh agent a small app and one sentence: "My agent keeps calling fetch() directly in components even though CLAUDE.md says not to." It wrote the test and passed 8 of 8 labeled examples. It found both violations, including a `window.fetch`, and ignored a comment that said "must not call fetch()". It also pointed out that CLAUDE.md's rule was wider than the request and asked whether to test that too.
+
+It's early. agent-tests isn't released yet, so you need [Bun](https://bun.sh) and a checkout of it (the skill says how). Rules that need a model also need an OpenAI and an Anthropic key; regex-only rules don't.
+
+[The skill](skills/agent-tests/enforce-project-rules/SKILL.md)
+
 ## Install
 
 A skill is a folder. Copy it to where your agent looks for skills:
 
 ```sh
 git clone --depth 1 https://github.com/mlgxiii/skills.git /tmp/skills
-cp -R /tmp/skills/skills/bref-ui/bref-brand-theme .claude/skills/
+cp -R /tmp/skills/skills/bref-ui/bref-brand-theme .claude/skills/       # or
+cp -R /tmp/skills/skills/agent-tests/enforce-project-rules .claude/skills/
 ```
 
-Then ask: *"Make this app match our brand: https://our-site.example"*. Needs Node 18+, nothing else.
+Then ask: *"Make this app match our brand: https://our-site.example"*, or *"Make this a rule: …"*.
 
 ## Why the checks
 

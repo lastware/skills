@@ -1,0 +1,43 @@
+{
+	"id": "no-console-log",
+	"title": "No console.log outside the logger",
+	"description": "Application code logs through src/lib/logger.ts.",
+	"triggers": [
+		{
+			"id": "app-code",
+			"description": "TypeScript under src/ except the logger.",
+			"glob": [
+				"src/**/*.ts",
+				"!src/lib/logger.ts"
+			]
+		}
+	],
+	"checks": [
+		{
+			"id": "direct-console-log",
+			"description": "Flags direct console.log calls.",
+			"error": "console.log outside src/lib/logger.ts; use log() from the logger.",
+			"grep": "\\bconsole\\.log\\("
+		}
+	],
+	"evals": [
+		{
+			"name": "Direct console.log",
+			"path": "src/pay.ts",
+			"content": "console.log(\"x\")",
+			"expect": "fail"
+		},
+		{
+			"name": "Uses logger",
+			"path": "src/pay.ts",
+			"content": "log(\"x\")",
+			"expect": "pass"
+		},
+		{
+			"name": "Logger itself",
+			"path": "src/lib/logger.ts",
+			"content": "console.log(m)",
+			"expect": "skip"
+		}
+	]
+}

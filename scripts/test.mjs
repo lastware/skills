@@ -24,6 +24,12 @@ for (const dir of tests) {
 		console.log(`- ${name}  (needs a model: npm run try)`);
 		continue;
 	}
+	// `needs: VAR` tests require a local dependency (e.g. an agent-tests checkout). CI always provides it.
+	const needs = field(md, 'needs');
+	if (needs && !process.env[needs] && !process.env.CI) {
+		console.log(`- ${name}  (set ${needs} to run)`);
+		continue;
+	}
 	const problems = [];
 	const expect = field(md, 'expect');
 	if (expect) {

@@ -16,6 +16,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - uses: oven-sh/setup-bun@v2
+      - name: agent-tests checkout (pinned to the commit the agent-tests skills were tested with)
+        run: |
+          git clone --quiet https://github.com/feuersteiner/agent-tests "$RUNNER_TEMP/agent-tests"
+          git -C "$RUNNER_TEMP/agent-tests" checkout --quiet 498aa5e
+          (cd "$RUNNER_TEMP/agent-tests" && bun install --ignore-scripts --frozen-lockfile --linker=hoisted)
+          echo "AGENT_TESTS_CORE=$RUNNER_TEMP/agent-tests/core" >> "$GITHUB_ENV"
       - name: Every skill is named and documented
         run: node scripts/repo.mjs check
       - name: Skill tests (good answers pass, bad ones fail)
