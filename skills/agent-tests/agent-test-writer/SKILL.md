@@ -1,9 +1,9 @@
 ---
-name: enforce-project-rules
-description: Turn a project rule your coding agent keeps breaking (from CLAUDE.md, AGENTS.md, a review comment, or a correction) into an agent test, a TEST.md plus test.yaml under .agents/tests/, prove it fails on a violation and passes on compliant code, then check the repository against it. Use when the user says things like "make this a rule", "stop the agent doing X again", or "check the codebase for X".
+name: agent-test-writer
+description: Turn a project rule your coding agent keeps breaking (from CLAUDE.md, AGENTS.md, a review comment, or a correction) into an agent test, a TEST.md plus test.yaml under .agents/tests/, prove it fails on a violation and passes on compliant code, then check the repository against it. Use when the user says things like "make this a rule", "write an agent test for X", "stop the agent doing X again", or "check the codebase for X".
 ---
 
-# Enforce project rules
+# Agent test writer
 
 Turn one rule into one agent test, prove it works, and then check the code with it.
 An agent test only reports findings. Never change application code while
@@ -130,7 +130,7 @@ from a run that didn't happen.
 
    Run every command below **from the repository root** (`run.ts` reads
    `agent-tests.config.yaml` there), with the skill's real path, for example
-   `bun .claude/skills/enforce-project-rules/scripts/run.ts`. Below it is
+   `bun .claude/skills/agent-test-writer/scripts/run.ts`. Below it is
    written `<skill-dir>/scripts/run.ts`.
 
 5. **Prove the test works.** Run
